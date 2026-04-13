@@ -63,7 +63,9 @@ int main(int argc, char *argv[])
     scanner.getTime(dateBuffer, sizeof(dateBuffer));
 
     // CREATE TXT
-    scanner.createTXT(dateBuffer, ipAddress);
+    std::string date(dateBuffer, 10); // extract YYYY-MM-DD
+    std::string filename = "PortScannerOutput_" + date + ".txt";
+    scanner.createTXT(filename, dateBuffer, ipAddress);
 
     // Initialize Winsock
     WSADATA wsaData;
@@ -74,13 +76,27 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    std::cout << "Beginning Scan Now" << std::endl;
+
     // loop through all ports
     for (int port = startingPort; port <= endingPort; port++)
     {
-        scanner.createSocket(port, ipAddress, result); // create connect
+        scanner.createSocket(filename, port, ipAddress, result); // create connect
+        if ((endingPort * 0.25) == port)
+        {
+            std::cout << "1/4 of the way through" << std::endl;
+        }
+        else if ((endingPort * 0.50) == port)
+        {
+            std::cout << "2/4 of the way through" << std::endl;
+        }
+        else if ((endingPort * 0.75) == port)
+        {
+            std::cout << "3/4 of the way through" << std::endl;
+        }
     }
 
-    std::cout << "Text has been written to example.txt" << std::endl;
+    std::cout << "Scan has been written to: " << filename << std::endl;
     WSACleanup();
     return 0;
 }

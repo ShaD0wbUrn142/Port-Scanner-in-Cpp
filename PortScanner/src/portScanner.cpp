@@ -3,10 +3,10 @@
 // #pragma comment(lib, "ws2_32.lib") // Link Winsock library
 //  https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-connect
 
-void portScanner::createSocket(int port, const std::string &ipAddress, int result)
+void portScanner::createSocket(const std::string filename, int port, const std::string &ipAddress, int result)
 {
     // Open file in append mode
-    std::wofstream appendFile("example.txt", std::ios_base::app);
+    std::wofstream appendFile(filename, std::ios_base::app);
 
     // check if file opened successfully
     if (!appendFile.is_open())
@@ -48,7 +48,7 @@ void portScanner::createSocket(int port, const std::string &ipAddress, int resul
     {
         int error = WSAGetLastError();
 
-        std::cout << "Port " << port << " CLOSED (Error: " << error << ")\n";
+        // std::cout << "Port " << port << " CLOSED (Error: " << error << ")\n"; will just keep for now, don't really need, just nice to have
 
         // Log CLOSED port to file
         if (appendFile.is_open())
@@ -58,7 +58,7 @@ void portScanner::createSocket(int port, const std::string &ipAddress, int resul
     }
     else
     {
-        std::cout << "Port " << port << " OPEN\n";
+        // std::cout << "Port " << port << " OPEN\n";
 
         // Log OPEN port to file
         if (appendFile.is_open())
@@ -106,12 +106,8 @@ void portScanner::getTime(char *buffer, size_t bufferSize)
     std::strftime(buffer, bufferSize, "%Y-%m-%d %H:%M:%S", local_time);
 }
 
-void portScanner::createTXT(const char *buffer, const std::string &ipAddress)
+void portScanner::createTXT(const std::string filename, const char *buffer, const std::string &ipAddress)
 {
-    // txt creation
-    std::string date(buffer, 10); // extract YYYY-MM-DD
-    std::string filename = "PortScannerOutput_" + date + ".txt";
-
     std::ofstream outputFile(filename);
 
     // Did it open?

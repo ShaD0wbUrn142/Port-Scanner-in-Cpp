@@ -15,7 +15,7 @@ public:
     portScanner() = default;
     ~portScanner() = default;
 
-    void createSocket(int port, const std::string &ipAddress, int result);
+    void createSocket(const std::string filename, int port, const std::string &ipAddress, int result);
     void getTime(char *buffer, size_t bufferSize);
-    void createTXT(const char *buffer, const std::string &ipAddress);
+    void createTXT(const std::string filename, const char *buffer, const std::string &ipAddress);
 };
